@@ -1,0 +1,21 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+ 
+  <path xmlns="http://www.w3.org/2000/svg" 
+    d="M60,340 L60,60 L120,60 L280,260 L280,60 L340,60 L340,340 L280,340 L120,140 L120,340 L60,340 Z" 
+    stroke="#141414" fill="#141414" 
+    stroke-width="5" 
+    stroke-linecap="round" stroke-linejoin="round" id="svg_6" />
+  
+  <path xmlns="http://www.w3.org/2000/svg" 
+    d="M150,370 L150,230 L260,370 Z" 
+    stroke="#4caf50" fill="#4caf50" 
+    stroke-width="5" 
+    stroke-linecap="round" stroke-linejoin="round" id="svg_6" />
+  
+  <path xmlns="http://www.w3.org/2000/svg" 
+    d="M140,30 L250,30 L250,170 Z" 
+    stroke="#FFC107" fill="#FFC107" 
+    stroke-width="5" 
+    stroke-linecap="round" stroke-linejoin="round" id="svg_6" />
+  
+</svg>

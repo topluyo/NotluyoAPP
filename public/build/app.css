@@ -1,0 +1,924 @@
+
+/** source\Bord\Bord.css  **/
+html,body{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+*{
+  box-sizing: border-box;
+}
+.bord{
+  width: 100%;
+  height: 100%;
+}
+
+/** source\Bord\Style.css  **/
+/*-- .full-in --*/
+.full-in {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+/** source\Bord\Assistant\Assistant.css  **/
+.bord--assistant{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+:root{
+  --pad:200px;
+}
+@media screen and (max-width: 600px){
+  :root{
+    --pad:50px;
+  }
+}
+ 
+
+/*-- Panel --*/
+.bord--assistant--panel{
+  /*
+  position: absolute;
+  top: 100px;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: 160px;
+  background-color: var(--backcolor-opacity);
+  backdrop-filter: blur(8px);
+  overflow: auto;
+  border-radius: 0.5em;
+  box-shadow: 0 0 0 2px var(--color-1);
+  z-index: 3;
+  */
+}
+
+.bord--assistant--panel--title{
+  font-size: 2em;
+  color: var(--color-3);
+  text-align: center;
+  padding: 0.2em;
+}
+
+.bord--assistant--panel--content{
+  padding: 1em;
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  height: 100%;
+  overflow: auto;
+}
+
+.bord--assistant--panel--description{
+  color: var(--color-1);
+}
+.bord--assistant--panel--description p{
+  margin: 0;
+}
+
+.bord--assistant--panel--image{
+  width: 240px;
+  max-width: 240px;
+  min-width: 240px;
+  height: auto;
+  float: right;
+  object-position: top;
+  object-fit: contain;
+}
+/*-- Panel Image --*/
+.bord--assistant--panel.image .bord--assistant--panel--title{
+  display: none;
+}
+.bord--assistant--panel.image .bord--assistant--panel--description{
+  display: none;
+}
+.bord--assistant--panel.image .bord--assistant--panel--image{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  float: none;
+  object-position: center;
+  object-fit: contain;
+  max-width: 100%;
+  min-width: 100%;
+  height: 100%;
+}
+
+/*-- Subtitle --*/
+.bord--assistant--speaker,
+.bord--assistant--subtitle,
+.bord--assistant--translate--subtitle{
+  position: absolute;
+  left: var(--pad);
+  right: var(--pad);
+  height: 2.6em;
+  line-height: 1.2;
+  display: flex;
+  align-items: end;
+  overflow: hidden;
+
+  background: var(--backcolor-opacity);
+  padding: 4px;
+  border-radius: 4px;
+  backdrop-filter: blur(8px);
+}
+
+.bord--assistant--speaker{
+  color: var(--color-3);
+  bottom: 116px;
+  font-weight: bold;
+  background: var(--backcolor-opacity);
+  padding: 4px;
+  height: 1.8em;
+  align-items: center;
+}
+.bord--assistant--speaker:empty{
+  display: none;
+}
+
+.bord--assistant--subtitle{
+  bottom: 60px;
+  color: var(--color-1);
+  font-size: 1.2em;
+  font-weight: 600;
+}
+.bord--assistant--subtitle:not(.active){
+  opacity: .2;
+}
+
+
+.bord--assistant--translate--subtitle{
+  bottom: 10px;
+  color: var(--color-1);
+  font-weight: 600;
+}
+
+/*-- Assistant --*/
+.bord--assistant--face{
+  position: absolute;
+  left: 0px;
+  width: var(--pad);
+  bottom: 0px;
+  height: var(--pad);
+  transition: transform 0.2s;
+  transform: translate(-100%,0);
+}
+.bord--assistant--face.active{
+  transform: translate(0,0);
+}
+.bord--assistant--face img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left bottom;
+}
+/** source\Bord\Components\Container.css  **/
+/*---- .bord--container ----*/
+
+.bord--container{
+  
+}
+
+.bord--container--default{
+  position: absolute;
+  top: 100px;
+  right: 20px;
+  width: 240px;
+  height: calc(100% - 200px);
+  background-color: var(--color-1);
+  color:var(--backcolor-1);
+  border-radius: 8px;
+  z-index: 4;
+}
+
+.bord--container .bord--container--header{
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+.bord--container .bord--container--header .bord--button--icon{
+  font-size: 12px;
+  padding: 8px;
+}
+.bord--container .bord--container--title{
+  display: flex;
+  align-items: center;
+  flex:1;
+}
+.bord--container .bord--container--close:hover{
+  background: red;
+}
+.bord--container--body{
+  height: calc(100% - 36px);
+  overflow: auto;
+}
+
+
+
+/*---  bord--layout-2  ---*/
+.bord--layout-2 {
+  display: grid;
+  grid-template-columns: calc(50% - 0.25em) calc(50% - 0.25em);
+  gap: 0.5em;
+  justify-content: center;
+}
+/** source\Bord\Components\Modal.css  **/
+.bord--modal{
+  position: absolute;
+  top: 100px;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: 160px;
+  background-color: var(--backcolor-opacity);
+  backdrop-filter: blur(8px);
+  border-radius: 0.5em;
+  box-shadow: 0 0 0 2px var(--color-1);
+  z-index: 4;
+  color: var(--color-1);
+}
+
+.bord--modal--title{
+  color: var(--color-3);
+  font-size: 2em;
+  padding: 0.2em;
+  text-align: center;
+}
+.bord--modal--content{
+  overflow: auto;
+}
+
+.bord--modal--close{
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1.2em;
+  width: 0;
+  height: 0;
+  cursor: pointer;
+  transform: translate(50%, -50%);
+  background-color: var(--backcolor-1);
+  backdrop-filter: blur(8px);
+  color: var(--color-1);
+  box-shadow:inset 0 0 0 2px var(--color-1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/** source\Bord\Icons\Icons.css  **/
+icon{
+  line-height: 0;
+  vertical-align: middle;
+  display: inline-flex;
+}
+
+icon[name]{
+  align-items: center;
+  gap: 0.5em;
+}
+/** source\Bord\Plugins\Animation\animation.css  **/
+#test{ 
+  color:red;
+}
+/** source\Bord\Presentation\Presentation.css  **/
+.bord--presentation{
+  position: absolute;
+  bottom: 00px;
+  left: 100px;
+  right: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: var(--color-1);
+  font-weight: 600;
+  z-index: 3;
+  font-size: 20px;
+}
+
+.bord--presentation--items{
+  flex: 1;
+  position: relative;
+  width: 100%;
+  display: block;
+  height: 48px;
+  overflow: hidden;
+}
+
+.bord--presentation--coordinate--item{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 33.33%;
+  position: absolute;
+  top: 0;
+  transition: all 1s ease-in-out;
+  left:calc(33.33% * ( var(--item-index) - var(--index) + 1 ) );
+  height: 100%;
+  font-size: 16px;
+  opacity: .6;
+}
+
+.bord--presentation--coordinate--item.active{
+  color: var(--color-5);
+  transform: scale(1.5);
+  opacity: 1;
+}
+.bord--presentation--coordinate--item:hover{
+  opacity: 1;
+}
+
+
+
+/* Right Side Box */
+.bord--presentation--coordinates-container{
+  position: absolute;
+  top: 100px;
+  right: 20px;
+  width: 240px;
+  height: calc(100% - 200px);
+  background-color: var(--color-1);
+  color:var(--backcolor-1);
+  border-radius: 8px;
+  z-index: 3;
+}
+
+.bord--presentation--coordinates-container--item icon[name=line2]{
+  display: none;
+}
+.bord--presentation--coordinates-container-list.sort .bord--presentation--coordinates-container--item icon[name=line2]{
+  display: inline-flex;
+}
+
+.bord--presentation--coordinates-container-list.sort .bord--presentation--coordinates-container--item icon[name=target],
+.bord--presentation--coordinates-container-list.sort .bord--presentation--coordinates-container--item icon[name=play]
+{
+  display: none;
+}
+
+.bord--presentation--coordinates-container-list.sort .bord--presentation--coordinates-container--item{
+  cursor: move;
+}
+/** source\Bord\Vision\Animation.css  **/
+.animation-spin{
+  animation: spin infinite 2s linear;
+  -webkit-animation: spin infinite 2s linear;
+  -moz-animation: spin infinite 2s linear;
+  -o-animation: spin infinite 2s linear;
+  -ms-animation: spin infinite 2s linear;
+}
+
+@keyframes spin {
+  from{ transform: rotate(0deg); }
+  to{ transform: rotate(360deg); }
+}
+
+.animation-zoom-in{
+  animation: zoom-in 0.4s ease-in-out both;
+  -webkit-animation: zoom-in 0.4s ease-in-out both;
+  -moz-animation: zoom-in 0.4s ease-in-out both;
+  -o-animation: zoom-in 0.4s ease-in-out both;
+  -ms-animation: zoom-in 0.4s ease-in-out both;
+}
+@keyframes zoom-in {
+  from{ transform: scale(.5); opacity: 0; }
+  to{ transform: scale(1); opacity: 1; }
+}
+
+
+.animation-fade-in{
+  animation: fade-in 0.4s ease-in-out both;
+  -webkit-animation: fade-in 0.4s ease-in-out both;
+  -moz-animation: fade-in 0.4s ease-in-out both;
+  -o-animation: fade-in 0.4s ease-in-out both;
+  -ms-animation: fade-in 0.4s ease-in-out both;
+}
+
+@keyframes fade-in {
+  from{ opacity: 0; }
+  to{ opacity: 1; }
+}
+/** source\Bord\Vision\Buttons.css  **/
+/*----------- .bord--button -----------*/
+.bord--button--round{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 5px;
+  background-color: white;
+  color:black;
+  box-shadow: 2px 2px 8px #0008;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.bord--button--round:hover{
+  transform: matrix(1.1, 0, 0, 1.1, 0, 0);
+}
+
+.bord--button--round icon{
+  font-size: 1.125em;
+}
+
+/*----------- .bord--buttons--right -----------*/
+.bord--buttons--right{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.bord--buttons--container{
+  display: flex;
+}
+.bord--buttons--right .bord--buttons--container .bord--button--round{
+  display: none;
+  animation: fadeInLeft 0.25s ease-in-out both calc(var(--index) * 0.05s);
+}
+.bord--button--active .bord--buttons--container .bord--button--round{
+  display: flex;
+}
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/*------------ .bord--buttons--down ------------*/
+.bord--buttons--down{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.bord--buttons--down .bord--buttons--container{
+  display: flex;
+  flex-direction: column;
+}
+.bord--buttons--down .bord--buttons--container .bord--button--round{
+  display: none;
+  animation: fadeInDown 0.25s ease-in-out both calc(var(--index) * 0.05s);
+}
+.bord--button--active .bord--buttons--container .bord--button--round{
+  display: flex;
+}
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+
+
+
+
+/*----------  .bord--button--icon  -----------*/
+.bord--button--icon{
+  margin: 4px;
+  display: flex;
+  padding: 6px;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--color-1);
+  background-color: var(--backcolor-opacity);
+  transition: all .2s;
+}
+.bord--button--icon:hover{
+  background-color: var(--backcolor-1);
+}
+
+
+/*----------  .bord--button--icon--hover  -----------*/
+.bord--button--icon--hover{
+  position: relative;
+  cursor: pointer;
+  width: 1.8em;
+  height: 1.8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bord--button--icon--hover:hover::before{
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  width: 1.8em;
+  height: 1.8em;
+  box-shadow: inset 0 0 0 1em var(--backcolor-opacity);
+  border-radius: 50%;
+  opacity: 0.5;
+  z-index: 0;
+}
+/** source\Bord\Vision\Font.css  **/
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;600;700;900&display=swap');
+
+body{
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.bord--vision--bord text{
+  font-family: 'Source Sans Pro', sans-serif;
+}
+/** source\Bord\Vision\Theme.css  **/
+.bord[theme=black]{
+	--backcolor-1:#171717;
+	--backcolor-2:#131313;
+	--backcolor-3:#000000;
+	--backcolor-opacity:#17171788;
+	--select-1:#FFFFFF22;
+	--color-1:#FFFFFF;
+	--color-2:#f44336;
+	--color-3:#FFC107;
+	--color-4:#4caf50;
+	--color-5:#2196f3;
+	--color-6:#9c27b0;
+	--invert: invert(100%);
+	--background: radial-gradient(var(--backcolor-1), var(--backcolor-2), var(--backcolor-3) );
+	--background: var(--backcolor-1);
+}
+
+.bord[theme=white]{
+	--backcolor-1:#DDD;
+	--backcolor-2:#EEE;
+	--backcolor-3:#FFF;
+	--backcolor-opacity:#DDD8;
+	--select-1:#00000022;
+	--color-1:#000000;
+	--color-2:#d44336;
+	--color-3:#d5a000;
+	--color-4:#4caf50;
+	--color-5:#2196f3;
+	--color-6:#9c27b0;
+	--invert: none;
+	--background: radial-gradient(var(--backcolor-1), var(--backcolor-2), var(--backcolor-3) );
+	--background: var(--backcolor-1);
+}
+
+.bord[theme=green]{
+	--backcolor-1: #183b1a;
+	--backcolor-2: #132a14;
+	--backcolor-3: #0c1c0d;
+	--backcolor-opacity: #183b1a88;
+	--select-1: #FFFFFF22;
+	--color-1: #FFFFFF;
+	--color-2: #f44336;
+	--color-3: #ffc107;
+	--color-4: #8bc34a;
+	--color-5: #00bcd4;
+	--color-6: #9c27b0;
+	--invert: invert(100%);
+	--background: radial-gradient(var(--backcolor-1), var(--backcolor-2), var(--backcolor-3) );
+	--background: var(--backcolor-1);
+}
+
+.bord[theme=yellow]{
+	--backcolor-1:#bc9365;
+	--backcolor-2:#cdad87;
+	--backcolor-3:#d0b695;
+	--backcolor-opacity:#bc936588;
+	--select-1:#00000022;
+	--color-1: #221100;
+	--color-2: #ba1001;
+	--color-2: #ba0148;
+	--color-3: #683d00;
+	--color-3: #8f3a01;
+	--color-4: #147818;
+	--color-5: #055fa6;
+	--color-6: #9006a7;
+	--invert: none;
+	--background: url("/public/images/paper.jpg");
+}
+
+
+.bord--vision{
+  background-color: var(--backcolor-1);
+	background-image: var(--background);
+	background-size: cover;
+	background-position: center;
+}
+
+.bord [color="1"]{ stroke: var(--color-1); }
+.bord [color="2"]{ stroke: var(--color-2); }
+.bord [color="3"]{ stroke: var(--color-3); }
+.bord [color="4"]{ stroke: var(--color-4); }
+.bord [color="5"]{ stroke: var(--color-5); }
+.bord [color="6"]{ stroke: var(--color-6); }
+
+
+
+/** source\Bord\Vision\Vision.css  **/
+/* 
+@import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,300,700);
+*/
+
+.bord--vision,body{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  touch-action: none!important;
+  -webkit-user-select: none!important;
+  -moz-user-select: none!important;
+  -ms-user-select: none!important;
+  user-select: none!important;
+}
+
+.bord--vision *{
+  touch-action: none!important;
+  -webkit-user-select: none!important;
+  -moz-user-select: none!important;
+  -ms-user-select: none!important;
+  user-select: none!important;
+}
+
+svg.bord--vision--bord,svg.bord--vision--space{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  shape-rendering: optimizeSpeed;
+  text-rendering: optimizeSpeed;
+  color-rendering: optimizeSpeed
+}
+
+.bord--vision--bord{
+  z-index: 2;
+}
+
+svg.bord--vision--bord{
+  text-anchor: middle;
+  dominant-baseline: middle;
+  font-family:'Roboto Condensed';
+  font-size: 16px;
+  shape-rendering: optimizeSpeed;
+  text-rendering: optimizeSpeed;
+  color-rendering: optimizeSpeed;
+}
+
+svg.bord--vision--space path,
+svg.bord--vision--space polyline,
+svg.bord--vision--space polygon,
+svg.bord--vision--bord path,
+svg.bord--vision--bord polyline,
+svg.bord--vision--bord polygon{
+  fill: transparent;
+  shape-rendering: auto;
+}
+
+/*------------- MEDIA -------------*/
+.bord--vision--medias{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.bord--vision--media-camera{
+  position: absolute;
+  overflow: visible;
+  /* will-change: transform; */
+}
+.bord--vision--media-container{
+  position: absolute;
+}
+
+.bord--vision--media-camera img{
+  object-fit: contain;
+  left:0;
+  top:0;
+  position: absolute;
+  /* optimize speed */
+  image-rendering: optimizeSpeed;
+  will-change: transform;
+}
+
+.bord--vision--media--paper{
+  /*
+  background-image: var(--background); 
+  background-size: cover;
+  */
+  border: 5px solid var(--color-1);
+  border-radius: 1%;
+}
+.bord--vision--media--paper img{
+  /*
+  mix-blend-mode: multiply;
+  */
+  filter: var(--invert);
+}
+
+
+/*-------- .selected & .select-rectangle --------*/
+svg.bord--vision--space .selected{
+  opacity: 0.3;
+}
+.bord--vision--medias .selected{
+  opacity: 0.5;
+}
+
+.bord--vision--space rect.select-rectangle{
+  fill: #8882;
+  stroke: #4AF;
+  stroke-width:2px;
+  stroke-dasharray:6px;
+  vector-effect: non-scaling-stroke;
+}
+
+/*
+.bord--vision--space path{
+  stroke-width: calc(var(--stroke) * var(--scale));
+  vector-effect: non-scaling-stroke;
+}
+*/
+
+
+/*-------- title --------*/
+/*
+.bord--vision--title {  
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "bord--vision--title--image bord--vision--title--text"
+    "bord--vision--title--image bord--vision--title--url";
+  color: var(--color-1);
+}
+
+.bord--vision--title--image { grid-area: bord--vision--title--image; }
+.bord--vision--title--text { grid-area: bord--vision--title--text; }
+.bord--vision--title--url { grid-area: bord--vision--title--url; }
+*/
+.bord--vision--title{
+  display: flex;
+  border-radius: 8px;
+  color: var(--color-1);
+  opacity: .9;
+  padding: 0px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background: var(--select-1);
+  gap: 6px;
+  z-index: 4;
+  backdrop-filter: blur(4px);
+}
+.bord--vision--title-link{
+  display: inline-flex;
+}
+.bord--vision--title--image { 
+  width: 40px;
+  min-width: 40px;
+  border-radius: 6px;
+}
+.bord--vision--title--text { 
+  font-weight: 600;
+  font-size: 14px;
+}
+.bord--vision--title--url { 
+  font-weight: 400;
+  opacity: .9;
+  font-size: 12px;
+}
+
+
+
+
+.bord--vision.hide-ui .bord--button--round:not(.show-ui),
+.bord--vision.hide-ui .bord--web-class--medias{
+  display: none;
+}
+
+/*-- button fix --*/
+
+.bord--vision .bord--button--round,
+.bord--vision .bord--buttons--right,
+.bord--vision .bord--buttons--container,
+.bord--vision .bord--buttons--down{
+  z-index: 4;
+}
+/** source\Bord\WebClass\WebClass.css  **/
+.bord--web-class--intro{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding: 1em;
+}
+.bord--web-class--intro *{
+  font-size: 1em;
+  outline: none;
+  padding: .5em;
+}
+.bord--web-class--intro button{
+  font-weight: bold;
+  background: var(--color-3);
+  color: var(--backcolor-1);
+  cursor: pointer;
+}
+
+.bord--web-class--intro button:focus{
+  box-shadow: 0 0 16px var(--color-3);
+}
+
+.bord--web-class--intro button,
+.bord--web-class--intro input{
+  color: var(--backcolor-1);
+  border: 1px solid;
+}
+
+.bord--web-class--medias{
+  position: absolute;
+  right: 10px;
+  bottom:50px;
+  width: 180px;
+  z-index: 4;
+  max-height: calc(100% - 100px);
+  overflow: auto;
+  /*
+  backdrop-filter: blur(6px);
+  border-radius: 0.5em;
+  */
+}
+
+.bord--web-class--medias video{
+  width: 100%;
+  border-radius: 8px;
+  max-height: 100%;
+}
+
+.bord--web-class--medias video.fullscreen-media{
+  position: fixed;
+  top: 50px;
+  left: 50px;
+  width: calc(100% - 250px);
+  height: calc(100% - 100px);
+  object-fit: cover;
+}
+
+.bord--web-class--medias .bord--web-class--user.fullscreen-media{
+  position: fixed;
+  top: 50px;
+  left: 50px;
+  width: calc(100% - 250px);
+  height: calc(100% - 100px);
+  object-fit: contain;
+}
+
+.bord--web-class--medias .bord--web-class--user.fullscreen-media video{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bord--web-class--user{
+  position: relative;
+  margin-bottom: .25em;
+  min-height: 24px;
+}
+
+.bord--web-class--user--name{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0.25em;
+  color: var(--color-1);
+  background: var(--backcolor-opacity);
+  height:28px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  z-index: 1;
+}

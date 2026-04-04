@@ -1,0 +1,22 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg" background="black">
+
+    <path xmlns="http://www.w3.org/2000/svg" 
+      d="M80,320 L80,80 L320,320 L320 80" 
+      stroke="#DDD" fill="none" 
+      stroke-width="20" 
+      stroke-linecap="round" stroke-linejoin="round" id="n" />
+    
+    <path xmlns="http://www.w3.org/2000/svg" 
+      d="M140,320 L140,220 L240,320 Z" 
+      stroke="#DDD" fill="#DDD" 
+      stroke-width="10"
+      stroke-linecap="round" stroke-linejoin="round" id="n_down" />
+    <path xmlns="http://www.w3.org/2000/svg" 
+      d="M140,320 L140,220 L240,320 Z" 
+      stroke="#DDD" fill="#DDD" 
+      stroke-width="10"
+      transform-origin="center" transform="rotate(180)"
+      stroke-linecap="round" stroke-linejoin="round" id="n_down" />
+    
+  
+  </svg>

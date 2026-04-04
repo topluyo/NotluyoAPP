@@ -1,0 +1,89 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.backdrop svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes draw {
+  from { stroke-dashoffset: var(--len); }
+  to { stroke-dashoffset: 0; }
+}
+
+.drawGroup {
+  --total: 5;
+  --duration: 3s;
+}
+
+.drawPath {
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: var(--len);
+  animation: draw calc(var(--duration) / var(--total)) linear forwards;
+  animation-delay: calc(0.3s + var(--duration) * var(--i) / var(--total));
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.panel {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 3rem 2.5rem;
+  border-radius: 1.25rem;
+  backdrop-filter: blur(12px);
+  background: rgba(20, 20, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  animation: fadeUp 0.8s ease-out forwards;
+  animation-delay: var(--duration, 3s);
+  opacity: 0;
+  min-width: 340px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-top: -0.5rem;
+}
+
+.loginBtn {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.hint {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}

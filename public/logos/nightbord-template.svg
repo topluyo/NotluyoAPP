@@ -1,0 +1,51 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+ <g stroke="null">
+  <title>background</title>
+  <rect x="-1" y="-1" width="402" height="402" id="canvas_background" fill="#191919" stroke="null"/>
+  <g id="canvasGrid" display="none" stroke="null">
+   <rect id="svg_1" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
+  </g>
+ </g>
+ <g stroke="null">
+  <title>Layer 1</title>
+  <g id="svg_5" stroke="null">
+    <path xmlns="http://www.w3.org/2000/svg" 
+      d="M60,340 L60,60 L120,60 L280,260 L280,60 L340,60 L340,340 L280,340 L120,140 L120,340 L60,340 Z" 
+      stroke="#ffffff" fill="white" 
+      stroke-width="5" 
+      stroke-linecap="round" stroke-linejoin="round" id="svg_6" />
+    
+    <path xmlns="http://www.w3.org/2000/svg" 
+      d="M150,370 L150,230 L260,370 Z" 
+      stroke="#4caf50" fill="#4caf50" 
+      stroke-width="5" 
+      stroke-linecap="round" stroke-linejoin="round" id="svg_6" />
+    
+    <path xmlns="http://www.w3.org/2000/svg" 
+      d="M140,30 L250,30 L250,170 Z" 
+      stroke="#FFC107" fill="#FFC107" 
+      stroke-width="5" 
+      stroke-linecap="round" stroke-linejoin="round" id="svg_6" />
+    
+
+    <!--
+    <path xmlns="http://www.w3.org/2000/svg" fill="white" stroke-width="2" d="M80,300L160,100 L200,100L225,240L280,100 L320,100L240,300 L200,300L175,160L120,300Z" stroke-linecap="round" stroke-linejoin="round" id="svg_6" stroke="#ffffff"/>
+    -->
+    <!-- 
+      <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="10" d="M80,300L160,100M240,300L320,100" stroke-linecap="round" stroke-linejoin="round" id="svg_6" stroke="#ffffff"/>
+      <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="10" d="M120,300L175,160L200,300" stroke-linecap="round" stroke-linejoin="round" id="svg_6" stroke="#ffffff"/>
+      <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="10" d="M200,100L225,240L280,100" stroke-linecap="round" stroke-linejoin="round" id="svg_6" stroke="#ffffff"/>
+    -->
+    <!-- 
+    <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="10" d="M80,300L160,100M240,300L320,100" stroke-linecap="round" stroke-linejoin="round" id="svg_6" stroke="#ffffff"/>
+    <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="10" d="M120,300L160,200L200,300" stroke-linecap="round" stroke-linejoin="round" id="svg_6" stroke="#ffffff"/>
+    <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="10" d="M200,100L240,200
+    -->
+    <!-- 
+      <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="10" d="M80,300L160,100L240,300L320,100" stroke-linecap="round" stroke-linejoin="round" id="svg_6" stroke="#ffffff"/>
+      <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="10" d="M100,300L160,150L220,300" stroke-linecap="round" stroke-linejoin="round" id="svg_6" stroke="#ffffff"/>
+      <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="10" d="M180,100L240,250L300,100" stroke-linecap="round" stroke-linejoin="round" id="svg_6" stroke="#ffffff"/>
+    -->
+  </g>
+ </g>
+</svg>
