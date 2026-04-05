@@ -49,7 +49,7 @@ export async function GET(request) {
   } catch (error) {
     console.error("OAuth callback error:", error);
     return NextResponse.redirect(
-      `${appUrl}/login?error=server_error`
+      `${appUrl}/login?error=server_error&message=${encodeURIComponent(error.message)}`
     );
   }
 }
