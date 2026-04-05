@@ -8,11 +8,5 @@
       "source": "/@:usernick/:bordslug",
       "destination": "/u/:usernick/:bordslug"
     }
-  ],
-  "crons": [
-    {
-      "path": "/api/cron/cleanup",
-      "schedule": "0 */6 * * *"
-    }
   ]
 }

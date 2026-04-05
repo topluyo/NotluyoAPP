@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
-import { getDb, getUserStorageUsage, SINGLE_UPLOAD_LIMIT, STORAGE_LIMIT } from "@/lib/db";
+import { getDb, getUserStorageUsage, cleanupExpiredTemps, SINGLE_UPLOAD_LIMIT, STORAGE_LIMIT } from "@/lib/db";
 
 // GET /api/temp/:token - Get shared temp bord data
 export async function GET(request, { params }) {
   const { token } = await params;
   const sql = getDb();
+
+  // Lazy cleanup - delete expired temp bords
+  await cleanupExpiredTemps();
 
   const bords = await sql`
     SELECT stb.*, u.nick as user_nick, u.name as user_name
