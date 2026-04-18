@@ -25,56 +25,17 @@ function CallbackHandler() {
     try {
       setStatus("exchanging");
 
-      // Adım 1: Server'dan formData al (client_secret güvende kalıyor)
-      const prepRes = await fetch("/api/auth/prepare-exchange", {
+      // Kodu kendi server API'mize gönder — secret hiç tarayıcıya gelmiyor
+      const res = await fetch("/api/auth/exchange", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code }),
       });
 
-      if (!prepRes.ok) {
-        const data = await prepRes.json();
-        throw new Error(data.error || "Token hazırlama başarısız");
-      }
+      const data = await res.json();
 
-      const { formData } = await prepRes.json();
-
-      // Adım 2: Tarayıcıdan Topluyo'ya token isteği
-      // Tarayıcının kendi Cloudflare cookie'si olduğundan 403 olmaz.
-      // application/x-www-form-urlencoded = CORS preflight gerektirmez.
-      const tokenRes = await fetch("https://topluyo.com/!pass/token", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formData,
-      });
-
-      const tokenText = await tokenRes.text();
-      let tokenData;
-      try {
-        tokenData = JSON.parse(tokenText);
-      } catch {
-        throw new Error(
-          "Topluyo'dan geçersiz yanıt (" + tokenRes.status + "): " +
-          tokenText.substring(0, 100)
-        );
-      }
-
-      if (tokenData.status !== "success" || !tokenData.user) {
-        throw new Error(tokenData.message || "Kimlik doğrulama başarısız");
-      }
-
-      setStatus("finalizing");
-
-      // Adım 3: Kullanıcı verisini server'a gönder → JWT oluştur
-      const finalRes = await fetch("/api/auth/finalize", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user: tokenData.user }),
-      });
-
-      if (!finalRes.ok) {
-        const data = await finalRes.json();
-        throw new Error(data.error || "Oturum oluşturulamadı");
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Kimlik doğrulama başarısız");
       }
 
       setStatus("success");
@@ -102,7 +63,6 @@ function CallbackHandler() {
   const messages = {
     processing: "İşleniyor...",
     exchanging: "Topluyo ile doğrulanıyor...",
-    finalizing: "Oturum oluşturuluyor...",
     success: "Giriş başarılı! Yönlendiriliyorsunuz...",
   };
 
