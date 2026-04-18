@@ -11,37 +11,37 @@ function CallbackHandler() {
 
   useEffect(() => {
     const code = searchParams.get("code");
-    const state = searchParams.get("state");
 
-    if (!code || !state) {
+    if (!code) {
       setStatus("error");
-      setError("Missing code or state parameter");
+      setError("Geçersiz oturum açma bağlantısı (kod eksik)");
       return;
     }
 
-    handleCallback(code, state);
+    handleCallback(code);
   }, [searchParams]);
 
-  async function handleCallback(code, state) {
+  async function handleCallback(code) {
     try {
       setStatus("exchanging");
 
-      // Step 1: Get exchange params from our server (validates state, returns form data)
+      // Adım 1: Server'dan formData al (client_secret güvende kalıyor)
       const prepRes = await fetch("/api/auth/prepare-exchange", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code, state }),
+        body: JSON.stringify({ code }),
       });
 
       if (!prepRes.ok) {
         const data = await prepRes.json();
-        throw new Error(data.error || "Prepare exchange failed");
+        throw new Error(data.error || "Token hazırlama başarısız");
       }
 
       const { formData } = await prepRes.json();
 
-      // Step 2: Exchange code for user data FROM THE BROWSER
-      // Browser has cf_clearance for topluyo.com, so Cloudflare won't block
+      // Adım 2: Tarayıcıdan Topluyo'ya token isteği
+      // Tarayıcının kendi Cloudflare cookie'si olduğundan 403 olmaz.
+      // application/x-www-form-urlencoded = CORS preflight gerektirmez.
       const tokenRes = await fetch("https://topluyo.com/!pass/token", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -53,16 +53,19 @@ function CallbackHandler() {
       try {
         tokenData = JSON.parse(tokenText);
       } catch {
-        throw new Error("Invalid response from Topluyo: " + tokenText.substring(0, 200));
+        throw new Error(
+          "Topluyo'dan geçersiz yanıt (" + tokenRes.status + "): " +
+          tokenText.substring(0, 100)
+        );
       }
 
       if (tokenData.status !== "success" || !tokenData.user) {
-        throw new Error(tokenData.message || "Authentication failed");
+        throw new Error(tokenData.message || "Kimlik doğrulama başarısız");
       }
 
       setStatus("finalizing");
 
-      // Step 3: Send user data to our server to create JWT session
+      // Adım 3: Kullanıcı verisini server'a gönder → JWT oluştur
       const finalRes = await fetch("/api/auth/finalize", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -71,13 +74,13 @@ function CallbackHandler() {
 
       if (!finalRes.ok) {
         const data = await finalRes.json();
-        throw new Error(data.error || "Failed to finalize login");
+        throw new Error(data.error || "Oturum oluşturulamadı");
       }
 
       setStatus("success");
       window.location.href = "/dashboard";
     } catch (err) {
-      console.error("OAuth error:", err);
+      console.error("OAuth hatası:", err);
       setStatus("error");
       setError(err.message);
     }

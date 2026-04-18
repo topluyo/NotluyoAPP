@@ -1,27 +1,17 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 
 // POST /api/auth/prepare-exchange
-// Validates state, returns form data for client-side token exchange
+// State zaten /api/auth/callback'te doğrulandı.
+// Bu endpoint sadece token exchange için gerekli formData'yı döndürür.
+// client_secret güvenli şekilde server-side'da kalır, client'a gönderilmez.
 export async function POST(request) {
-  const { code, state } = await request.json();
+  const { code } = await request.json();
 
-  if (!code || !state) {
-    return NextResponse.json({ error: "Missing code or state" }, { status: 400 });
+  if (!code) {
+    return NextResponse.json({ error: "Missing code" }, { status: 400 });
   }
 
-  // Verify state
-  const cookieStore = await cookies();
-  const savedState = cookieStore.get("oauth_state")?.value;
-
-  if (!savedState || savedState !== state) {
-    return NextResponse.json({ error: "Invalid state" }, { status: 400 });
-  }
-
-  // Clear state cookie
-  cookieStore.delete("oauth_state");
-
-  // Build form data for the token exchange
+  // Token exchange form data'sını hazırla
   const formData = new URLSearchParams({
     grant_type: "authorization_code",
     code,
