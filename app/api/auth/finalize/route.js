@@ -6,7 +6,8 @@ import { upsertUser, createToken, setAuthCookie } from "@/lib/auth";
 export async function POST(request) {
   const { user: topluyoUser } = await request.json();
 
-  if (!topluyoUser || !topluyoUser.id) {
+  // TopluyoPASS returns user_id, user_name, user_nick, user_image
+  if (!topluyoUser || (!topluyoUser.user_id && !topluyoUser.id)) {
     return NextResponse.json({ error: "Invalid user data" }, { status: 400 });
   }
 

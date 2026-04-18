@@ -1,20 +1,21 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { exchangeCodeForUser, upsertUser, createToken } from "@/lib/auth";
 
-// Run on Edge Runtime - different infrastructure/IPs than Serverless
-export const runtime = "edge";
+// NOT: Edge Runtime KULLANMA - Cloudflare, Vercel Edge IP'lerini 403 ile engelliyor.
+// Serverless runtime + browser-like headers (exchangeCodeForUser içinde) kullanılıyor.
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
   const state = searchParams.get("state");
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://notluyo-app.vercel.app";
 
   if (!code || !state) {
     return NextResponse.redirect(`${appUrl}/login?error=missing_params`);
   }
 
-  // Verify state
+  // State doğrulama
   const cookieStore = await cookies();
   const savedState = cookieStore.get("oauth_state")?.value;
 
@@ -22,80 +23,38 @@ export async function GET(request) {
     return NextResponse.redirect(`${appUrl}/login?error=invalid_state`);
   }
 
-  // Clear state cookie
+  // State cookie'yi temizle
   cookieStore.delete("oauth_state");
 
   try {
-    // Token exchange - from Edge Runtime
-    const tokenUrl = "https://topluyo.com/!pass/token";
-    const formData = new URLSearchParams({
-      grant_type: "authorization_code",
-      code,
-      redirect_uri: process.env.REDIRECT_URI,
-      client_id: process.env.APP_ID,
-      client_secret: process.env.APP_KEY,
-    });
+    // Token exchange - browser-like headers ile Cloudflare bypass
+    const tokenData = await exchangeCodeForUser(code);
 
-    const tokenRes = await fetch(tokenUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Accept": "application/json",
-      },
-      body: formData.toString(),
-    });
-
-    const responseText = await tokenRes.text();
-    console.log("[OAuth Edge]", tokenRes.status, responseText.substring(0, 300));
-
-    let data;
-    try {
-      data = JSON.parse(responseText);
-    } catch {
+    if (tokenData.status !== "success" || !tokenData.user) {
       return NextResponse.redirect(
-        `${appUrl}/login?error=invalid_response&status=${tokenRes.status}`
+        `${appUrl}/login?error=auth_failed&message=${encodeURIComponent(
+          tokenData.message || "Authentication failed"
+        )}`
       );
     }
 
-    if (data.status !== "success" || !data.user) {
-      return NextResponse.redirect(
-        `${appUrl}/login?error=auth_failed&message=${encodeURIComponent(data.message || "Failed")}`
-      );
-    }
+    // Kullanıcıyı DB'ye kaydet/güncelle ve JWT oluştur
+    const user = await upsertUser(tokenData.user);
+    const token = await createToken(user);
 
-    // Success - call finalize to create user + JWT
-    const finalizeRes = await fetch(`${appUrl}/api/auth/finalize`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Cookie": request.headers.get("cookie") || "",
-      },
-      body: JSON.stringify({ user: data.user }),
+    // Auth cookie set et ve dashboard'a yönlendir
+    const response = NextResponse.redirect(new URL("/dashboard", appUrl));
+    response.cookies.set("nightbord_token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      maxAge: 30 * 24 * 60 * 60, // 30 gün
+      path: "/",
     });
-
-    const finalizeData = await finalizeRes.json();
-
-    // Build redirect response and forward Set-Cookie headers from finalize  
-    const redirectUrl = new URL("/dashboard", appUrl);
-    const response = NextResponse.redirect(redirectUrl);
-
-    // Forward all set-cookie headers from finalize response
-    const setCookies = finalizeRes.headers.getSetCookie?.() || [];
-    for (const cookie of setCookies) {
-      response.headers.append("set-cookie", cookie);
-    }
-
-    // Fallback: if getSetCookie is not available
-    if (setCookies.length === 0) {
-      const setCookieHeader = finalizeRes.headers.get("set-cookie");
-      if (setCookieHeader) {
-        response.headers.set("set-cookie", setCookieHeader);
-      }
-    }
 
     return response;
   } catch (error) {
-    console.error("OAuth Edge error:", error);
+    console.error("[OAuth Callback] Hata:", error);
     return NextResponse.redirect(
       `${appUrl}/login?error=server_error&message=${encodeURIComponent(error.message)}`
     );
